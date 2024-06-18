@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Detalhes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .relatorio-content {
+            width: 21cm; /* Largura padrão de uma página A4 */
+            margin: 20px auto; /* Centraliza o conteúdo e adiciona margens */
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc; /* Borda para visualização */
+            background-color: #fff; /* Fundo branco */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra para visualização */
+        }
+        h1 {
+            text-align: center;
+        }
+        .info-item {
+            margin-bottom: 10px;
+            text-align: left; /* Alinha o texto à esquerda dentro do div .info-item */
+        }
+        .info-item strong {
+            margin-right: 5px;
+        }
+        .buttons-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .buttons-section button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="relatorio-content">
+        <h1>Relatório de Detalhes</h1>
+        <div class="info-item"><strong>ID:</strong> <span id="ref_id">12345</span></div>
+        <div class="info-item"><strong>OP:</strong> Operação 1</div>
+        <div class="info-item"><strong>Referência:</strong> Ref-001</div>
+        <div class="info-item"><strong>Tamanho 36:</strong> 10</div>
+        <div class="info-item"><strong>Tamanho 38:</strong> 15</div>
+        <div class="info-item"><strong>Tamanho 40:</strong> 20</div>
+        <div class="info-item"><strong>Tamanho 42:</strong> 18</div>
+        <div class="info-item"><strong>Tamanho 44:</strong> 12</div>
+        <div class="info-item"><strong>Tamanho 46:</strong> 8</div>
+        <div class="info-item"><strong>Tamanho 48:</strong> 5</div>
+        <div class="info-item"><strong>Tamanho 50:</strong> 3</div>
+        <div class="info-item"><strong>Tamanho 52:</strong> 2</div>
+        <div class="info-item"><strong>Tamanho 54:</strong> 1</div>
+        <div class="info-item"><strong>Quantidade Total:</strong> 94</div>
+        <div class="info-item"><strong>Data:</strong> 2024-06-17</div>
+        <div class="buttons-section">
+            <button onclick="imprimir()">Imprimir</button>
+            <button onclick="salvarPDF()">Salvar PDF</button>
+            <button onclick="exportarExcel()">Exportar Excel</button>
+        </div>
+    </div>
+
+    <!-- Seu código JavaScript -->
+     <script src="imprimirItem.js"></script>
+    <script>
+        // Função para imprimir o relatório
+        function imprimir() {
+            window.print();
+        }
+
+        // Função para salvar o relatório em PDF
+        function salvarPDF() {
+            var relatorioHTML = document.querySelector('.relatorio-content').innerHTML;
+
+            // Configuração básica para salvar como PDF usando jsPDF
+            var doc = new jsPDF();
+            doc.fromHTML(relatorioHTML, 15, 15, {
+                width: 170 // Largura máxima do conteúdo em PDF
+            });
+            doc.save('relatorio.pdf');
+        }
+
+        // Função para exportar o relatório para Excel
+        function exportarExcel() {
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>OP</th>
+                        <th>Referência</th>
+                        <th>Tamanho 36</th>
+                        <th>Tamanho 38</th>
+                        <th>Tamanho 40</th>
+                        <th>Tamanho 42</th>
+                        <th>Tamanho 44</th>
+                        <th>Tamanho 46</th>
+                        <th>Tamanho 48</th>
+                        <th>Tamanho 50</th>
+                        <th>Tamanho 52</th>
+                        <th>Tamanho 54</th>
+                        <th>Quantidade Total</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12345</td>
+                        <td>Operação 1</td>
+                        <td>Ref-001</td>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                        <td>18</td>
+                        <td>12</td>
+                        <td>8</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>94</td>
+                        <td>2024-06-17</td>
+                    </tr>
+                </tbody>
+            `;
+
+            // Criar um objeto WorkBook do Excel
+            const wb = XLSX.utils.book_new();
+            // Adicionar a tabela ao WorkBook
+            const ws = XLSX.utils.table_to_sheet(table);
+            XLSX.utils.book_append_sheet(wb, ws, "Relatório");
+
+            // Salvar o arquivo Excel
+            XLSX.writeFile(wb, 'relatorio.xlsx');
+        }
+    </script>
+</body>
+</html>
